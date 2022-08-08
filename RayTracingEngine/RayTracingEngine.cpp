@@ -35,6 +35,7 @@ static int max_depth = 0;
 
 hittable_list random_scene();
 hittable_list two_spheres();
+hittable_list two_perlin_spheres();
 
 // World
 
@@ -45,10 +46,17 @@ hittable_list two_spheres();
     auto vfov = 20.0;
     auto aperture = 0.1;
   */  
-    
+    /*
     hittable_list world = two_spheres();
     point3 lookfrom = point3(13, 2, 3);
     point3 lookat = point3(0, 0, 0);
+    auto vfov = 20.0;
+    auto aperture = 0.0;
+    */
+
+    auto world = two_perlin_spheres();
+    auto lookfrom = point3(13, 2, 3);
+    auto lookat = point3(0, 0, 0);
     auto vfov = 20.0;
     auto aperture = 0.0;
     
@@ -140,6 +148,16 @@ hittable_list two_spheres() {
 
     objects.add(make_shared<sphere>(point3(0, -10, 0), 10, make_shared<lambertian>(checker)));
     objects.add(make_shared<sphere>(point3(0, 10, 0), 10, make_shared<lambertian>(checker)));
+
+    return objects;
+}
+
+hittable_list two_perlin_spheres() {
+    hittable_list objects;
+
+    auto pertext = make_shared<noise_texture>();
+    objects.add(make_shared<sphere>(point3(0, -1000, 0), 1000, make_shared<lambertian>(pertext)));
+    objects.add(make_shared<sphere>(point3(0, 2, 0), 2, make_shared<lambertian>(pertext)));
 
     return objects;
 }
