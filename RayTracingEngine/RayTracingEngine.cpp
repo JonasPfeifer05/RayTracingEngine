@@ -87,9 +87,9 @@ hittable_list cornell_box();
     auto vfov = 20.0;
     auto aperture = 0.0;
     */
+    auto background = color(0, 0, 0);
     auto world = cornell_box();
     auto aspect_ratio = 1.0;
-    auto image_width = 600;
     auto lookfrom = point3(278, 278, -800);
     auto lookat = point3(278, 278, 0);
     auto vfov = 40.0;
