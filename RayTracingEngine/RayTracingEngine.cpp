@@ -36,6 +36,7 @@ static int max_depth = 0;
 hittable_list random_scene();
 hittable_list two_spheres();
 hittable_list two_perlin_spheres();
+hittable_list earth();
 
 // World
 
@@ -54,7 +55,15 @@ hittable_list two_perlin_spheres();
     auto aperture = 0.0;
     */
 
+    /*
     auto world = two_perlin_spheres();
+    auto lookfrom = point3(13, 2, 3);
+    auto lookat = point3(0, 0, 0);
+    auto vfov = 20.0;
+    auto aperture = 0.0;
+    */
+
+    auto world = earth();
     auto lookfrom = point3(13, 2, 3);
     auto lookat = point3(0, 0, 0);
     auto vfov = 20.0;
@@ -118,6 +127,7 @@ int main() {
 
     render_single_thread();
 
+    std::cerr << "FINISHED";
     //test_pool();
 
     return 0;
@@ -140,6 +150,14 @@ color ray_color(const ray& r, const hittable& world, int depth) {
     vec3 unit_direction = unit_vector(r.direction());
     auto t = 0.5 * (unit_direction.y() + 1.0);
     return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
+}
+
+hittable_list earth() {
+    auto earth_texture = make_shared<image_texture>("earthmap.jpg");
+    auto earth_surface = make_shared<lambertian>(earth_texture);
+    auto globe = make_shared<sphere>(point3(0, 0, 0), 2, earth_surface);
+
+    return hittable_list(globe);
 }
 
 hittable_list two_spheres() {
