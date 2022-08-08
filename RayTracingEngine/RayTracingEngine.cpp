@@ -33,23 +33,35 @@ static int image_width = 0;
 static int samples_per_pixel = 0;
 static int max_depth = 0;
 
-// World
+hittable_list random_scene();
+hittable_list two_spheres();
 
-static auto world = random_scene();
+// World
+/*
+    hittable_list world = random_scene();
+    point3 lookfrom = point3(13, 2, 3);
+    point3 lookat = point3(0, 0, 0);
+    auto vfov = 20.0;
+    auto aperture = 0.1;
+    */
+
+    hittable_list world = two_spheres();
+    point3 lookfrom = point3(13, 2, 3);
+    point3 lookat = point3(0, 0, 0);
+    auto vfov = 20.0;
+    auto aperture = 0.0;
+
 
 // Camera
 
-static point3 lookfrom(13, 2, 3);
-static point3 lookat(0, 0, 0);
-static vec3 vup(0, 1, 0);
-static auto dist_to_focus = 10.0;
-static auto aperture = 0.02;
+vec3 vup(0, 1, 0);
+auto dist_to_focus = 10.0;
 
-camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
-
+camera cam(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
 
 color ray_color(const ray& r, const hittable& world, int depth);
-hittable_list random_scene();
+
+
 
 void render_line(int line) {
     for (int x = 0; x < image_width; ++x)
@@ -93,6 +105,8 @@ int main() {
     std::cerr << "Enter amount of max Bounces per Ray: ";
     std::cin >> max_depth;
 
+    camera cam(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
+
     render_single_thread();
     //test_pool();
 
@@ -118,11 +132,22 @@ color ray_color(const ray& r, const hittable& world, int depth) {
     return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
 }
 
+hittable_list two_spheres() {
+    hittable_list objects;
+
+    auto checker = make_shared<checker_texture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+
+    objects.add(make_shared<sphere>(point3(0, -10, 0), 10, make_shared<lambertian>(checker)));
+    objects.add(make_shared<sphere>(point3(0, 10, 0), 10, make_shared<lambertian>(checker)));
+
+    return objects;
+}
+
 hittable_list random_scene() {
     hittable_list world;
 
-    auto ground_material = make_shared<lambertian>(color(0.5, 0.5, 0.5));
-    world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
+    auto checker = make_shared<checker_texture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+    world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, make_shared<lambertian>(checker)));
 
     hittable_list balls;
     for (int a = -11; a < 11; a++) {
