@@ -28,8 +28,8 @@ hittable_list random_scene();
 const static auto aspect_ratio = 3.0 / 2.0;
 const static int image_width = 1200;
 const static int image_height = static_cast<int>(image_width / aspect_ratio);
-const static int samples_per_pixel = 500;
-const static int max_depth = 50;
+static int samples_per_pixel;
+static int max_depth;
 
 // World
 
@@ -104,6 +104,12 @@ void test_pool() {
 }
 
 int main() {
+    std::cerr << "Enter amount of Samples per Pixel: ";
+    std::cin >> samples_per_pixel;
+
+    std::cerr << "Enter amount of max Bounces per Ray: ";
+    std::cin >> max_depth;
+
     render_single_thread();
     //test_pool();
 
