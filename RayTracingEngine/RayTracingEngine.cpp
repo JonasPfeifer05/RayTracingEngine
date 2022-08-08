@@ -37,20 +37,21 @@ hittable_list random_scene();
 hittable_list two_spheres();
 
 // World
+
 /*
     hittable_list world = random_scene();
     point3 lookfrom = point3(13, 2, 3);
     point3 lookat = point3(0, 0, 0);
     auto vfov = 20.0;
     auto aperture = 0.1;
-    */
-
+  */  
+    
     hittable_list world = two_spheres();
     point3 lookfrom = point3(13, 2, 3);
     point3 lookat = point3(0, 0, 0);
     auto vfov = 20.0;
     auto aperture = 0.0;
-
+    
 
 // Camera
 
