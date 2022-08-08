@@ -28,7 +28,6 @@ hittable_list random_scene();
 
 // Image
 
-auto aspect_ratio = 16.0 / 9.0;
 static int image_height = 0;
 static int image_width = 0;
 static int samples_per_pixel = 0;
@@ -39,9 +38,11 @@ hittable_list two_spheres();
 hittable_list two_perlin_spheres();
 hittable_list earth();
 hittable_list simple_light();
+hittable_list cornell_box();
 
 // World
 /*
+    auto aspect_ratio = 16.0 / 9.0;
     auto background = color(0.70, 0.80, 1.00);
     hittable_list world = random_scene();
     point3 lookfrom = point3(13, 2, 3);
@@ -50,6 +51,7 @@ hittable_list simple_light();
     auto aperture = 0.1;
   */  
     /*            
+    auto aspect_ratio = 16.0 / 9.0;
     auto background = color(0.70, 0.80, 1.00);
     hittable_list world = two_spheres();
     point3 lookfrom = point3(13, 2, 3);
@@ -59,6 +61,7 @@ hittable_list simple_light();
     */
 
     /*
+    auto aspect_ratio = 16.0 / 9.0;
     auto background = color(0.70, 0.80, 1.00);
     auto world = two_perlin_spheres();
     auto lookfrom = point3(13, 2, 3);
@@ -67,6 +70,7 @@ hittable_list simple_light();
     auto aperture = 0.0;
     */
     /*
+    auto aspect_ratio = 16.0 / 9.0;
     auto background = color(0.70, 0.80, 1.00);
     auto world = earth();
     auto lookfrom = point3(13, 2, 3);
@@ -74,14 +78,22 @@ hittable_list simple_light();
     auto vfov = 20.0;
     auto aperture = 0.0;
     */
-    
-    auto background = color(0, 0, 0);
+    /*
+   auto aspect_ratio = 16.0 / 9.0;
+   auto background = color(0, 0, 0);
     auto world = simple_light();
     auto lookfrom = point3(26, 3, 6);
     auto lookat = point3(0, 2, 0);
     auto vfov = 20.0;
     auto aperture = 0.0;
-
+    */
+    auto world = cornell_box();
+    auto aspect_ratio = 1.0;
+    auto image_width = 600;
+    auto lookfrom = point3(278, 278, -800);
+    auto lookat = point3(278, 278, 0);
+    auto vfov = 40.0;
+    auto aperture = 0.0;
 
 // Camera
 
@@ -164,6 +176,24 @@ color ray_color(const ray& r, const color& background, const hittable& world, in
         return emitted;
 
     return emitted + attenuation * ray_color(scattered, background, world, depth - 1);
+}
+
+hittable_list cornell_box() {
+    hittable_list objects;
+
+    auto red = make_shared<lambertian>(color(.65, .05, .05));
+    auto white = make_shared<lambertian>(color(.73, .73, .73));
+    auto green = make_shared<lambertian>(color(.12, .45, .15));
+    auto light = make_shared<diffuse_light>(color(15, 15, 15));
+
+    objects.add(make_shared<yz_rect>(0, 555, 0, 555, 555, green));
+    objects.add(make_shared<yz_rect>(0, 555, 0, 555, 0, red));
+    objects.add(make_shared<xz_rect>(213, 343, 227, 332, 554, light));
+    objects.add(make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+    objects.add(make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+    objects.add(make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+
+    return objects;
 }
 
 hittable_list simple_light() {
