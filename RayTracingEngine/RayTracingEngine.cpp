@@ -21,6 +21,7 @@
 #include"thread_pool.h"
 #include "moving_sphere.h"
 #include "bvh.h"
+#include "aarect.h"
 
 
 hittable_list random_scene();
@@ -37,6 +38,7 @@ hittable_list random_scene();
 hittable_list two_spheres();
 hittable_list two_perlin_spheres();
 hittable_list earth();
+hittable_list simple_light();
 
 // World
 /*
@@ -64,14 +66,22 @@ hittable_list earth();
     auto vfov = 20.0;
     auto aperture = 0.0;
     */
-
+    /*
     auto background = color(0.70, 0.80, 1.00);
     auto world = earth();
     auto lookfrom = point3(13, 2, 3);
     auto lookat = point3(0, 0, 0);
     auto vfov = 20.0;
     auto aperture = 0.0;
+    */
     
+    auto background = color(0, 0, 0);
+    auto world = simple_light();
+    auto lookfrom = point3(26, 3, 6);
+    auto lookat = point3(0, 2, 0);
+    auto vfov = 20.0;
+    auto aperture = 0.0;
+
 
 // Camera
 
@@ -154,6 +164,19 @@ color ray_color(const ray& r, const color& background, const hittable& world, in
         return emitted;
 
     return emitted + attenuation * ray_color(scattered, background, world, depth - 1);
+}
+
+hittable_list simple_light() {
+    hittable_list objects;
+
+    auto pertext = make_shared<noise_texture>(4);
+    objects.add(make_shared<sphere>(point3(0, -1000, 0), 1000, make_shared<lambertian>(pertext)));
+    objects.add(make_shared<sphere>(point3(0, 2, 0), 2, make_shared<lambertian>(pertext)));
+
+    auto difflight = make_shared<diffuse_light>(color(4, 4, 4));
+    objects.add(make_shared<xy_rect>(3, 5, 1, 3, -2, difflight));
+
+    return objects;
 }
 
 hittable_list earth() {
