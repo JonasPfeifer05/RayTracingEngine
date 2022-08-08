@@ -117,6 +117,7 @@ int main() {
     camera cam(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
 
     render_single_thread();
+
     //test_pool();
 
     return 0;
