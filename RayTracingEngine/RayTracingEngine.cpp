@@ -20,6 +20,7 @@
 #include <future>
 #include"thread_pool.h"
 #include "moving_sphere.h"
+#include "bvh.h"
 
 
 hittable_list random_scene();
@@ -123,6 +124,7 @@ hittable_list random_scene() {
     auto ground_material = make_shared<lambertian>(color(0.5, 0.5, 0.5));
     world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
 
+    hittable_list balls;
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
             auto choose_mat = random_double();
@@ -136,7 +138,7 @@ hittable_list random_scene() {
                     auto albedo = color::random() * color::random();
                     sphere_material = make_shared<lambertian>(albedo);
                     auto center2 = center + vec3(0, random_double(0, .5), 0);
-                    world.add(make_shared<moving_sphere>(
+                    balls.add(make_shared<moving_sphere>(
                         center, center2, 0.0, 1.0, 0.2, sphere_material));
                 }
                 else if (choose_mat < 0.95) {
@@ -144,16 +146,18 @@ hittable_list random_scene() {
                     auto albedo = color::random(0.5, 1);
                     auto fuzz = random_double(0, 0.5);
                     sphere_material = make_shared<metal>(albedo, fuzz);
-                    world.add(make_shared<sphere>(center, 0.2, sphere_material));
+                    balls.add(make_shared<sphere>(center, 0.2, sphere_material));
                 }
                 else {
                     // glass
                     sphere_material = make_shared<dielectric>(1.5);
-                    world.add(make_shared<sphere>(center, 0.2, sphere_material));
+                    balls.add(make_shared<sphere>(center, 0.2, sphere_material));
                 }
             }
         }
     }
+
+    world.add(make_shared<bvh_node>(balls, 0, 1));
 
     auto material1 = make_shared<dielectric>(1.5);
     world.add(make_shared<sphere>(point3(0, 1, 0), 1.0, material1));
