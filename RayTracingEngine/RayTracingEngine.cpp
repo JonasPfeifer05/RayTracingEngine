@@ -19,17 +19,18 @@
 #include <sstream>
 #include <future>
 #include"thread_pool.h"
+#include "moving_sphere.h"
 
 
 hittable_list random_scene();
 
 // Image
 
-const static auto aspect_ratio = 3.0 / 2.0;
-const static int image_width = 1200;
-const static int image_height = static_cast<int>(image_width / aspect_ratio);
-static int samples_per_pixel;
-static int max_depth;
+auto aspect_ratio = 16.0 / 9.0;
+static int image_height = 0;
+static int image_width = 0;
+static int samples_per_pixel = 0;
+static int max_depth = 0;
 
 // World
 
@@ -43,7 +44,7 @@ static vec3 vup(0, 1, 0);
 static auto dist_to_focus = 10.0;
 static auto aperture = 0.02;
 
-static camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus);
+camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
 
 
 color ray_color(const ray& r, const hittable& world, int depth);
@@ -80,30 +81,11 @@ void render_single_thread() {
     std::cerr << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1000000.0 / 60 << "[min]" << std::endl;
 }
 
-void test_pool() {
-    ThreadPool pool;
-    int sum = 0;
-    int i;
-    for (i = 0; i < 2000; i++)
-    {
-        pool.QueueJob(
-            []() {
-                for (size_t i = 0; i < 100000000; i++)
-                {
-
-                }
-            }
-        );
-    }
-
-    pool.Start();
-
-    std::cerr << pool.busy();
-
-    std::cerr << sum;
-}
-
 int main() {
+    std::cerr << "Enter Height of the image(like 144 240 360 480 720 1080): ";
+    std::cin >> image_height;
+    image_width = image_height * aspect_ratio;
+
     std::cerr << "Enter amount of Samples per Pixel: ";
     std::cin >> samples_per_pixel;
 
@@ -146,14 +128,16 @@ hittable_list random_scene() {
             auto choose_mat = random_double();
             point3 center(a + 0.9 * random_double(), 0.2, b + 0.9 * random_double());
 
-            if ((center - point3(4, 0.2, 0)).length() > 0.9) {
+            if ((center - vec3(4, 0.2, 0)).length() > 0.9) {
                 shared_ptr<material> sphere_material;
 
                 if (choose_mat < 0.8) {
                     // diffuse
                     auto albedo = color::random() * color::random();
                     sphere_material = make_shared<lambertian>(albedo);
-                    world.add(make_shared<sphere>(center, 0.2, sphere_material));
+                    auto center2 = center + vec3(0, random_double(0, .5), 0);
+                    world.add(make_shared<moving_sphere>(
+                        center, center2, 0.0, 1.0, 0.2, sphere_material));
                 }
                 else if (choose_mat < 0.95) {
                     // metal
