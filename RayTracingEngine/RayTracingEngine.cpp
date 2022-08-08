@@ -39,15 +39,16 @@ hittable_list two_perlin_spheres();
 hittable_list earth();
 
 // World
-
 /*
+    auto background = color(0.70, 0.80, 1.00);
     hittable_list world = random_scene();
     point3 lookfrom = point3(13, 2, 3);
     point3 lookat = point3(0, 0, 0);
     auto vfov = 20.0;
     auto aperture = 0.1;
   */  
-    /*
+    /*            
+    auto background = color(0.70, 0.80, 1.00);
     hittable_list world = two_spheres();
     point3 lookfrom = point3(13, 2, 3);
     point3 lookat = point3(0, 0, 0);
@@ -56,6 +57,7 @@ hittable_list earth();
     */
 
     /*
+    auto background = color(0.70, 0.80, 1.00);
     auto world = two_perlin_spheres();
     auto lookfrom = point3(13, 2, 3);
     auto lookat = point3(0, 0, 0);
@@ -63,6 +65,7 @@ hittable_list earth();
     auto aperture = 0.0;
     */
 
+    auto background = color(0.70, 0.80, 1.00);
     auto world = earth();
     auto lookfrom = point3(13, 2, 3);
     auto lookat = point3(0, 0, 0);
@@ -77,8 +80,7 @@ auto dist_to_focus = 10.0;
 
 camera cam(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
 
-color ray_color(const ray& r, const hittable& world, int depth);
-
+color ray_color(const ray& r, const color& background, const hittable& world, int depth);
 
 
 void render_line(int line) {
@@ -89,7 +91,7 @@ void render_line(int line) {
             auto u = (x + random_double()) / (image_width - 1);
             auto v = (line + random_double()) / (image_height - 1);
             ray r = cam.get_ray(u, v);
-            pixel_color += ray_color(r, world, max_depth);
+            pixel_color += ray_color(r, background, world, max_depth);
         }
         write_color(std::cout, pixel_color, samples_per_pixel);
     }
@@ -133,23 +135,25 @@ int main() {
     return 0;
 }
 
-color ray_color(const ray& r, const hittable& world, int depth) {
+color ray_color(const ray& r, const color& background, const hittable& world, int depth) {
     hit_record rec;
 
     // If we've exceeded the ray bounce limit, no more light is gathered.
     if (depth <= 0)
         return color(0, 0, 0);
 
-    if (world.hit(r, 0.001, infinity, rec)) {
-        ray scattered;
-        color attenuation;
-        if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
-            return attenuation * ray_color(scattered, world, depth - 1);
-        return color(0, 0, 0);
-    }
-    vec3 unit_direction = unit_vector(r.direction());
-    auto t = 0.5 * (unit_direction.y() + 1.0);
-    return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
+    // If the ray hits nothing, return the background color.
+    if (!world.hit(r, 0.001, infinity, rec))
+        return background;
+
+    ray scattered;
+    color attenuation;
+    color emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
+
+    if (!rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+        return emitted;
+
+    return emitted + attenuation * ray_color(scattered, background, world, depth - 1);
 }
 
 hittable_list earth() {
