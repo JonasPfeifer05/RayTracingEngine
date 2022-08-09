@@ -18,7 +18,6 @@
 #include <string>
 #include <sstream>
 #include <future>
-#include"thread_pool.h"
 #include "moving_sphere.h"
 #include "bvh.h"
 #include "aarect.h"
