@@ -5,13 +5,13 @@
 
 #include <iostream>
 
-void write_color(std::ostream& out, color pixel_color, int samples_per_pixel) {
-    auto r = pixel_color.x();
-    auto g = pixel_color.y();
-    auto b = pixel_color.z();
+void writeColor(std::ostream& out, color pixelColor, int samplesPerPixel) {
+    auto r = pixelColor.x();
+    auto g = pixelColor.y();
+    auto b = pixelColor.z();
 
     // Divide the color by the number of samples and gamma-correct for gamma=2.0.
-    auto scale = 1.0 / samples_per_pixel;
+    auto scale = 1.0 / samplesPerPixel;
     r = sqrt(scale * r);
     g = sqrt(scale * g);
     b = sqrt(scale * b);

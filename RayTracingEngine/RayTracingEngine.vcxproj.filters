@@ -15,72 +15,66 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RayTracingEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="thread_pool.cpp">
+    <ClCompile Include="src\main\RayTracingEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ray.h">
+    <ClInclude Include="src\utils\ray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="material.h">
+    <ClInclude Include="src\texturing\material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hittable_list.h">
+    <ClInclude Include="src\objects\hittableList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hittable.h">
+    <ClInclude Include="src\objects\hittable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="color.h">
+    <ClInclude Include="src\utils\color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
+    <ClInclude Include="src\utils\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rtweekend.h">
+    <ClInclude Include="src\utils\rtweekend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sphere.h">
+    <ClInclude Include="src\objects\sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vec3.h">
+    <ClInclude Include="src\utils\vec3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="thread_pool.h">
+    <ClInclude Include="src\objects\movingSphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="moving_sphere.h">
+    <ClInclude Include="src\performance\aabb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="aabb.h">
+    <ClInclude Include="src\performance\bvh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bvh.h">
+    <ClInclude Include="src\texturing\texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="perlin.h">
+    <ClInclude Include="src\texturing\perlin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="external\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rtw_stb_image.h">
+    <ClInclude Include="src\utils\rtw_stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="aarect.h">
+    <ClInclude Include="src\objects\aarect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="box.h">
+    <ClInclude Include="src\objects\box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="constant_medium.h">
+    <ClInclude Include="src\objects\constantMedium.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

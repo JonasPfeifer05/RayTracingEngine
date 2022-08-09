@@ -1,7 +1,7 @@
 #ifndef AABB_H
 #define AABB_H
 
-#include "rtweekend.h"
+#include "../utils/rtweekend.h"
 
 class aabb {
 public:
@@ -11,15 +11,15 @@ public:
     point3 min() const { return minimum; }
     point3 max() const { return maximum; }
 
-    bool hit(const ray& r, double t_min, double t_max) const {
+    bool hit(const ray& r, double tMin, double tMax) const {
         for (int a = 0; a < 3; a++) {
             auto t0 = fmin((minimum[a] - r.origin()[a]) / r.direction()[a],
                 (maximum[a] - r.origin()[a]) / r.direction()[a]);
             auto t1 = fmax((minimum[a] - r.origin()[a]) / r.direction()[a],
                 (maximum[a] - r.origin()[a]) / r.direction()[a]);
-            t_min = fmax(t0, t_min);
-            t_max = fmin(t1, t_max);
-            if (t_max <= t_min)
+            tMin = fmax(t0, tMin);
+            tMax = fmin(t1, tMax);
+            if (tMax <= tMin)
                 return false;
         }
         return true;
@@ -29,7 +29,7 @@ public:
     point3 maximum;
 };
 
-aabb surrounding_box(aabb box0, aabb box1) {
+aabb surroundingBox(aabb box0, aabb box1) {
     point3 small(fmin(box0.min().x(), box1.min().x()),
         fmin(box0.min().y(), box1.min().y()),
         fmin(box0.min().z(), box1.min().z()));

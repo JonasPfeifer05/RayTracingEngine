@@ -2,26 +2,26 @@
 #define SPHERE_H
 
 #include "hittable.h"
-#include "vec3.h"
+#include "..\utils/vec3.h"
 
 class sphere : public hittable {
 public:
     sphere() {}
     sphere(point3 cen, double r, shared_ptr<material> m)
-        : center(cen), radius(r), mat_ptr(m) {};
+        : center(cen), radius(r), matPtr(m) {};
 
     virtual bool hit(
-        const ray& r, double t_min, double t_max, hit_record& rec) const override;
-    virtual bool bounding_box(double time0, double time1, aabb& output_box) const override;
+        const ray& r, double tMin, double tMax, hitRecord& rec) const override;
+    virtual bool boundingBox(double time0, double time1, aabb& outputBox) const override;
 
 
 public:
     point3 center;
     double radius;
-    shared_ptr<material> mat_ptr;
+    shared_ptr<material> matPtr;
 
 private:
-    static void get_sphere_uv(const point3& p, double& u, double& v) {
+    static void getSphereUv(const point3& p, double& u, double& v) {
         // p: a given point on the sphere of radius one, centered at the origin.
         // u: returned value [0,1] of angle around the Y axis from X=-1.
         // v: returned value [0,1] of angle from Y=-1 to Y=+1.
@@ -37,21 +37,21 @@ private:
     }
 };
 
-bool sphere::hit(const ray& r, double t_min, double t_max, hit_record& rec) const {
+bool sphere::hit(const ray& r, double tMin, double tMax, hitRecord& rec) const {
     vec3 oc = r.origin() - center;
-    auto a = r.direction().length_squared();
-    auto half_b = dot(oc, r.direction());
-    auto c = oc.length_squared() - radius * radius;
+    auto a = r.direction().lengthSquared();
+    auto halfB = dot(oc, r.direction());
+    auto c = oc.lengthSquared() - radius * radius;
 
-    auto discriminant = half_b * half_b - a * c;
+    auto discriminant = halfB * halfB - a * c;
     if (discriminant < 0) return false;
     auto sqrtd = sqrt(discriminant);
 
     // Find the nearest root that lies in the acceptable range.
-    auto root = (-half_b - sqrtd) / a;
-    if (root < t_min || t_max < root) {
-        root = (-half_b + sqrtd) / a;
-        if (root < t_min || t_max < root)
+    auto root = (-halfB - sqrtd) / a;
+    if (root < tMin || tMax < root) {
+        root = (-halfB + sqrtd) / a;
+        if (root < tMin || tMax < root)
             return false;
     }
 
@@ -59,15 +59,15 @@ bool sphere::hit(const ray& r, double t_min, double t_max, hit_record& rec) cons
     rec.p = r.at(rec.t);
     rec.normal = (rec.p - center) / radius;
 
-    vec3 outward_normal = (rec.p - center) / radius;
-    rec.set_face_normal(r, outward_normal);
-    get_sphere_uv(outward_normal, rec.u, rec.v);
-    rec.mat_ptr = mat_ptr;
+    vec3 outwardNormal = (rec.p - center) / radius;
+    rec.setFaceNormal(r, outwardNormal);
+    getSphereUv(outwardNormal, rec.u, rec.v);
+    rec.matPtr = matPtr;
 
     return true;
 }
 
-bool sphere::bounding_box(double time0, double time1, aabb& output_box) const {
+bool sphere::boundingBox(double time0, double time1, aabb& output_box) const {
     output_box = aabb(
         center - vec3(radius, radius, radius),
         center + vec3(radius, radius, radius));
