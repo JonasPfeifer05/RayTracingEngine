@@ -6,23 +6,23 @@
 #include <chrono>
 
 // Own Files
-#include "utils/rtweekend.h"
+#include "../utils/rtweekend.h"
 
-#include "utils/color.h"
-#include "objects/hittableList.h"
-#include "objects/sphere.h"
-#include "utils/camera.h"
-#include "material.h"
+#include "../utils/color.h"
+#include "../objects/hittableList.h"
+#include "../objects/sphere.h"
+#include "../utils/camera.h"
+#include "../texturing/material.h"
 #include <vector>
 #include <thread>
 #include <string>
 #include <sstream>
 #include <future>
-#include "objects/movingSphere.h"
-#include "bvh.h"
-#include "objects/aarect.h"
-#include "objects/box.h"
-#include "objects/constantMedium.h"
+#include "../objects/movingSphere.h"
+#include "../performance/bvh.h"
+#include "../objects/aarect.h"
+#include "../objects/box.h"
+#include "../objects/constantMedium.h"
 
 
 hittableList randomScene();
@@ -44,13 +44,13 @@ hittableList finalScene();
 
 // World
 
-//auto aspectRatio = 16.0 / 9.0;
-//auto background = color(0.70, 0.80, 1.00);
-//auto world = randomScene();
-//point3 lookfrom = point3(13, 2, 3);
-//point3 lookat = point3(0, 0, 0);
-//auto vfov = 20.0;
-//auto aperture = 0.1;
+auto aspectRatio = 16.0 / 9.0;
+auto background = color(0.70, 0.80, 1.00);
+auto world = randomScene();
+point3 lookfrom = point3(13, 2, 3);
+point3 lookat = point3(0, 0, 0);
+auto vfov = 20.0;
+auto aperture = 0.1;
 
 //auto aspectRatio = 16.0 / 9.0;
 //auto background = color(0.70, 0.80, 1.00);
@@ -97,13 +97,13 @@ hittableList finalScene();
 //auto vfov = 40.0;
 //auto aperture = 0.0;
 
-auto world = finalScene();
-auto aspectRatio = 1.0;
-auto background = color(0, 0, 0);
-auto lookfrom = point3(478, 278, -600);
-auto lookat = point3(278, 278, 0);
-auto vfov = 40.0;
-auto aperture = 0.0;
+//auto world = finalScene();
+//auto aspectRatio = 1.0;
+//auto background = color(0, 0, 0);
+//auto lookfrom = point3(478, 278, -600);
+//auto lookat = point3(278, 278, 0);
+//auto vfov = 40.0;
+//auto aperture = 0.0;
 
 // Camera
 
