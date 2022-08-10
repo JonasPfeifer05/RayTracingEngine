@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <chrono>
 
 class application
 {
@@ -12,7 +13,7 @@ public:
 	~application();
 
 	void load(scene* _scene);
-	void start();
+	void start(bool multiThreaded);
 	void output(std::string outName);
 
 private:
@@ -54,11 +55,23 @@ inline void application::load(scene* _scene)
 	m_renderer.setPixelBuffer(m_pixelBuffer);
 }
 
-inline void application::start()
+inline void application::start(bool multiThreaded)
 {
+	auto start = std::chrono::high_resolution_clock::now();
+
 	std::cout << "\nStarting to render image\n";
-	m_renderer.renderImage();
+	if (multiThreaded)
+	{
+		m_renderer.renderImageMultiThreaded();
+	}
+	else {
+		m_renderer.renderImageSingleThreaded();
+	}
 	std::cout << "\nFinished rendering the image\n";
+
+	auto stop = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+	std::cout << "Rendering took " << duration.count() / 1000000 << " seconds" << std::endl;
 }
 
 inline void application::output(std::string outName)

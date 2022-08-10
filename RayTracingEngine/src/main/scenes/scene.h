@@ -5,7 +5,7 @@ public:
 	~scene();
 
 	virtual int getHeigth() {
-		return 400;
+		return 720;
 	}
 
 	virtual int getWidth() {

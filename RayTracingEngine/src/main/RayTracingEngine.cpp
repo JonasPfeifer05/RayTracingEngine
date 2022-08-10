@@ -155,31 +155,12 @@ int main(int argc, char* argv[]) {
 
 	app.load(new scene());
 
-	app.start();
+	app.start(false);
 
-	app.output("output.ppm");
+	app.output("720_500_50_Standard_Scene_MultiThreaded_TEST.ppm");
 
 	std::cout << "\nPress any button to continue!";
 	std::cin.ignore();
-
-	/*
-	std::cerr << "Enter Height of the image(like 144 240 360 480 720 1080): ";
-	std::cin >> imageHeight;
-	imageWidth = imageHeight * aspectRatio;
-
-	std::cerr << "Enter amount of Samples per Pixel: ";
-	std::cin >> samplesPerPixel;
-
-	std::cerr << "Enter amount of max Bounces per Ray: ";
-	std::cin >> maxDepth;
-
-	camera cam(lookfrom, lookat, vup, vfov, aspectRatio, aperture, distToFocus, 0.0, 1.0);
-
-	renderSingleThread();
-
-	std::cerr << "FINISHED";
-	//test_pool();
-	*/
 
 	return 0;
 }
