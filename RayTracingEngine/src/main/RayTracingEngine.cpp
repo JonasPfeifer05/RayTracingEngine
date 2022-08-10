@@ -23,6 +23,7 @@
 #include "../objects/aarect.h"
 #include "../objects/box.h"
 #include "../objects/constantMedium.h"
+#include "application.h"
 
 
 hittableList randomScene();
@@ -114,7 +115,7 @@ camera cam(lookfrom, lookat, vup, vfov, aspectRatio, aperture, distToFocus, 0.0,
 
 color rayColor(const ray& r, const color& background, const hittable& world, int depth);
 
-
+/*
 void renderLine(int line) {
 	for (int x = 0; x < imageWidth; ++x)
 	{
@@ -128,7 +129,9 @@ void renderLine(int line) {
 		writeColor(std::cout, pixel_color, samplesPerPixel);
 	}
 }
+*/
 
+/*
 void renderSingleThread() {
 	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
@@ -145,8 +148,21 @@ void renderSingleThread() {
 	std::cerr << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1000000.0 << "[s]" << std::endl;
 	std::cerr << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1000000.0 / 60 << "[min]" << std::endl;
 }
+*/
 
-int main() {
+int main(int argc, char* argv[]) {
+	application app = application();
+
+	app.load(new scene());
+
+	app.start();
+
+	app.output("output.ppm");
+
+	std::cout << "\nPress any button to continue!";
+	std::cin.ignore();
+
+	/*
 	std::cerr << "Enter Height of the image(like 144 240 360 480 720 1080): ";
 	std::cin >> imageHeight;
 	imageWidth = imageHeight * aspectRatio;
@@ -163,10 +179,12 @@ int main() {
 
 	std::cerr << "FINISHED";
 	//test_pool();
+	*/
 
 	return 0;
 }
 
+/*
 color rayColor(const ray& r, const color& background, const hittable& world, int depth) {
 	hitRecord rec;
 
@@ -187,6 +205,7 @@ color rayColor(const ray& r, const color& background, const hittable& world, int
 
 	return emitted + attenuation * rayColor(scattered, background, world, depth - 1);
 }
+*/
 
 hittableList finalScene() {
 	hittableList boxes1;

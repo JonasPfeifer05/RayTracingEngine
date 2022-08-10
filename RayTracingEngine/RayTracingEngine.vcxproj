@@ -150,6 +150,9 @@
     <ClCompile Include="src\main\RayTracingEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\main\application.h" />
+    <ClInclude Include="src\main\renderer.h" />
+    <ClInclude Include="src\main\scenes\scene.h" />
     <ClInclude Include="src\performance\aabb.h" />
     <ClInclude Include="src\objects\aarect.h" />
     <ClInclude Include="src\objects\box.h" />

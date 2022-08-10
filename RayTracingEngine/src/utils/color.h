@@ -22,4 +22,20 @@ void writeColor(std::ostream& out, color pixelColor, int samplesPerPixel) {
         << static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' '
         << static_cast<int>(256 * clamp(b, 0.0, 0.999)) << '\n';
 }
+
+void translateColor(color& color, int samplesPerPixel) {
+    auto scale = 1.0 / samplesPerPixel;
+
+    color.e[0] = sqrt(scale * color.e[0]);
+    color.e[1] = sqrt(scale * color.e[1]);
+    color.e[2] = sqrt(scale * color.e[2]);
+
+    color.e[0] = static_cast<int>(256 * clamp(color.e[0], 0.0, 0.999));
+    color.e[1] = static_cast<int>(256 * clamp(color.e[1], 0.0, 0.999));
+    color.e[2] = static_cast<int>(256 * clamp(color.e[2], 0.0, 0.999));
+}
+
+void writeColorStream(std::ostream& out, color color) {
+    out << color.e[0] << " " << color.e[1] << " " << color.e[2] << "\n";
+}
 #endif

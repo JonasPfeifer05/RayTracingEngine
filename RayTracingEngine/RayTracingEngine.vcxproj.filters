@@ -77,5 +77,14 @@
     <ClInclude Include="src\objects\constantMedium.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\main\application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\scenes\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
