@@ -152,7 +152,6 @@
   <ItemGroup>
     <ClInclude Include="src\main\application.h" />
     <ClInclude Include="src\main\renderer.h" />
-    <ClInclude Include="src\main\scenes\finalScene.h" />
     <ClInclude Include="src\main\scenes\scene.h" />
     <ClInclude Include="src\performance\aabb.h" />
     <ClInclude Include="src\objects\aarect.h" />
