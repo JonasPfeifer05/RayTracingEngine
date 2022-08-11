@@ -8,8 +8,8 @@ class scene
 
 {
 public:
-	scene() : scene(720, 16.0/9.0, color(0.70, 0.80, 1.00), randomCamera(), randomScene()) {}
-	scene(int height, double ratio, color background, camera cam, hittableList world) 
+	scene() : scene(720, 16.0 / 9.0, color(0.70, 0.80, 1.00), randomCamera(), randomScene()) {}
+	scene(int height, double ratio, color background, camera cam, hittableList world)
 		: m_height(height), m_ratio(ratio), m_background(background), m_camera(cam), m_world(world) {}
 
 	virtual int getHeigth() {
@@ -179,4 +179,64 @@ hittableList finalScene() {
 
 scene getFinalScene() {
 	return scene(720, 1.0, color(0, 0, 0), finalCamera(), finalScene());
+}
+
+camera cornellCamera() {
+	return camera(point3(278, 278, -800), point3(278, 278, 0), vec3(0, 1, 0), 40.0, 1.0, 0.0, 10.0, 0.0, 1.0);
+}
+
+hittableList cornellScene() {
+	hittableList objects;
+
+	auto metalMat = make_shared<metal>(color(1.0,1.0,1.0), 0.0);
+	auto red = make_shared<lambertian>(color(.65, .05, .05));
+	auto white = make_shared<lambertian>(color(.73, .73, .73));
+	auto green = make_shared<lambertian>(color(.12, .45, .15));
+	auto light = make_shared<diffuseLight>(color(1.0*30, 0.65*30, 0.24*30));
+	objects.add(make_shared<yzRect>(0, 555, 0, 555, 555, red));
+	objects.add(make_shared<yzRect>(0, 555, 0, 555, 0, green));
+	objects.add(make_shared<xzRect>(213, 343, 227, 332, 554, light));
+	objects.add(make_shared<xzRect>(0, 555, 0, 555, 555, white));
+	objects.add(make_shared<xzRect>(0, 555, 0, 555, 0, white));
+	objects.add(make_shared<xyRect>(0, 555, 0, 555, 555, white));
+
+	shared_ptr<hittable> box1 = make_shared<box>(point3(0, 0, 0), point3(165, 330, 165), metalMat);
+	box1 = make_shared<rotateY>(box1, 15);
+	box1 = make_shared<translate>(box1, vec3(265, 0, 295));
+
+	shared_ptr<hittable> box2 = make_shared<box>(point3(0, 0, 0), point3(165, 165, 165), white);
+	box2 = make_shared<rotateY>(box2, -18);
+	box2 = make_shared<translate>(box2, vec3(130, 0, 65));
+
+	objects.add(box1);
+	objects.add(box2);
+
+	return objects;
+}
+
+scene getCornellScene() {
+	return scene(720, 1.0, color(0, 0, 0), cornellCamera(), cornellScene());
+}
+
+camera customCamera() {
+	return camera(point3(-20,10,-20), point3(0,0,20), point3(0,1,0), 40.0, 16.0/9.0, 0.0, 10.0, 0.0, 1.0);
+}
+
+hittableList customScene() {
+	hittableList world;
+
+	auto glassMat = make_shared<dielectric>(1.5);
+	world.add(make_shared<sphere>(point3(0,0,20), 5, glassMat));
+
+	auto metalMat = make_shared<metal>(color(0.8, 0.8, 0.8), 0.0);
+	world.add(make_shared<sphere>(point3(10, 0, 20), 5, metalMat));
+
+	auto groundMat = make_shared<lambertian>(color(.3, .3, .3));
+	world.add(make_shared<xzRect>(-100, 100, -100, 100, -10, groundMat));
+
+	return world;
+}
+
+scene getCustomScene() {
+	return scene(720, 16.0 / 9.0, color(0.70, 0.80, 1.00), customCamera(), customScene());
 }

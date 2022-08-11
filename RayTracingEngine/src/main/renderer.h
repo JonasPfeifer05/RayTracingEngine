@@ -26,7 +26,7 @@ private:
 
 color rayColor(const ray& r, const color& background, const hittable& world, int depth);
 
-renderer::renderer() : m_samplesPerPixel(10000), m_maxBounces(50), m_threadScale(1)
+renderer::renderer() : m_samplesPerPixel(2), m_maxBounces(50), m_threadScale(1)
 {
 
 }

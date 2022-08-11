@@ -153,11 +153,11 @@ void renderSingleThread() {
 int main(int argc, char* argv[]) {
 	application app = application();
 
-	app.load(getFinalScene());
+	app.load(getRandomScene());
 
 	app.start(true);
 
-	app.output("finalScene_720_10000_10.ppm");
+	app.output("test.ppm");
 
 	std::cout << "\nPress any button to continue!";
 	std::cin.ignore();
